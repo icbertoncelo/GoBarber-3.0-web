@@ -15,11 +15,11 @@ export default createGlobalStyle`
   body {
     background: #312e38;
     color: #fff;
-    font-size: 1.6rem;
     -webkit-font-smoothing: antialiased;
   }
 
   body, input, button {
+    font-size: 1.6rem;
     font-family: 'Roboto Slab', serif;
   }
 
