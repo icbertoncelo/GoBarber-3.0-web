@@ -19,6 +19,16 @@ export const Content = styled.div`
   width: 100%;
   max-width: 700px;
 
+  form {
+    margin: 80px 0;
+    width: 340px;
+    text-align: center;
+
+    h1 {
+      margin-bottom: 24px;
+    }
+  }
+
   > a {
     color: #f4ede8;
     display: block;
@@ -40,21 +50,11 @@ export const Content = styled.div`
 
   @media ${devices.mobile} {
     padding: 24px;
-  }
-`;
 
-export const Form = styled.form`
-  margin: 80px 0;
-  width: 340px;
-  text-align: center;
-
-  h1 {
-    margin-bottom: 24px;
-  }
-
-  @media ${devices.mobile} {
-    margin: 50px 0;
-    width: 100%;
+    form {
+      margin: 50px 0;
+      width: 100%;
+    }
   }
 `;
 

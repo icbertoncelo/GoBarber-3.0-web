@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 
-import { Container, Content, Form, Background } from './styles';
+import { Container, Content, Background } from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -13,7 +13,7 @@ const SignIn: React.FC = () => (
     <Content>
       <img src={logoImg} alt="GoBarber" />
 
-      <Form>
+      <form>
         <h1>Faça seu logon</h1>
         <Input type="email" name="email" placeholder="E-mail" icon={FiMail} />
         <Input
@@ -26,7 +26,7 @@ const SignIn: React.FC = () => (
         <Button type="submit">Entrar</Button>
 
         <a href="forgot">Esqueci minha senha</a>
-      </Form>
+      </form>
 
       <a href="account">
         <FiLogIn />
