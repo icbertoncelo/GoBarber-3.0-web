@@ -5,7 +5,7 @@ It is the front-end side developed using ReactJS.
 <!-- SignIn -->
 <br />
 <p align="center">
-  <img src="https://raw.githubusercontent.com/icbertoncelo/GoBarber-3.0-web/master/images/signIn.png" alt="signIn" width="600" height="400">
+  <img src="https://raw.githubusercontent.com/icbertoncelo/GoBarber-3.0-web/master/images/signIn.png" alt="signIn" width="700" height="400">
 
   <h3 align="center">SignIn page</h3>
 </p>
@@ -13,7 +13,7 @@ It is the front-end side developed using ReactJS.
 <!-- SignUp -->
 <br />
 <p align="center">
-  <img src="https://raw.githubusercontent.com/icbertoncelo/GoBarber-3.0-web/master/images/signUp.png" alt="signUp" width="600" height="400">
+  <img src="https://raw.githubusercontent.com/icbertoncelo/GoBarber-3.0-web/master/images/signUp.png" alt="signUp" width="700" height="400">
 
   <h3 align="center">SignUp page</h3>
 </p>
