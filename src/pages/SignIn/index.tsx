@@ -3,7 +3,8 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/auth';
+import { useToast } from '../../context/toast';
 
 import { signInSchema } from '../../utils/validations/signSchema';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -24,6 +25,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -34,16 +36,23 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
       } catch (error) {
         const validationErrors = getValidationErrors(error);
         formRef.current?.setErrors(validationErrors);
+
+        addToast({
+          type: 'error',
+          title: 'Erro de autenticação',
+          description:
+            'Ocorreu um erro ao fazer o login. Por favor, verifique as credenciais',
+        });
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
