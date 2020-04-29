@@ -7,7 +7,7 @@ import SignUp from '../pages/SignUp';
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={SignIn} />
-    <Route path="/cadastro" exact component={SignUp} />
+    <Route path="/signup" exact component={SignUp} />
   </Switch>
 );
 

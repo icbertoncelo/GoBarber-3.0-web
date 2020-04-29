@@ -3,6 +3,7 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { ValidationError } from 'yup';
+import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../context/auth';
 import { useToast } from '../../context/toast';
@@ -10,7 +11,7 @@ import { useToast } from '../../context/toast';
 import { signInSchema } from '../../utils/validations/signSchema';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { Container, Content, Background } from './styles';
+import { Container, Content, AnimationContainer, Background } from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -45,6 +46,8 @@ const SignIn: React.FC = () => {
         if (error instanceof ValidationError) {
           const validationErrors = getValidationErrors(error);
           formRef.current?.setErrors(validationErrors);
+
+          return;
         }
 
         addToast({
@@ -61,27 +64,34 @@ const SignIn: React.FC = () => {
   return (
     <Container>
       <Content>
-        <img src={logoImg} alt="GoBarber" />
+        <AnimationContainer>
+          <img src={logoImg} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu logon</h1>
-          <Input type="text" name="email" placeholder="E-mail" icon={FiMail} />
-          <Input
-            type="password"
-            name="password"
-            placeholder="Senha"
-            icon={FiLock}
-          />
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu logon</h1>
+            <Input
+              type="text"
+              name="email"
+              placeholder="E-mail"
+              icon={FiMail}
+            />
+            <Input
+              type="password"
+              name="password"
+              placeholder="Senha"
+              icon={FiLock}
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+            <a href="forgot">Esqueci minha senha</a>
+          </Form>
 
-        <a href="account">
-          <FiLogIn />
-          Criar conta
-        </a>
+          <Link to="signup">
+            <FiLogIn />
+            Criar conta
+          </Link>
+        </AnimationContainer>
       </Content>
 
       <Background />
