@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { animated } from 'react-spring';
 
 import devices from '../../../utils/devices';
 
@@ -21,7 +22,7 @@ const toastTypeVariations = {
   `,
 };
 
-export const Container = styled.div<ToastProps>`
+export const Container = styled(animated.div)<ToastProps>`
   display: flex;
   width: 360px;
 
