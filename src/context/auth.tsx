@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
 interface AuthState {
@@ -11,15 +12,24 @@ interface SignInCredentials {
   password: string;
 }
 
+interface SignUpCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
 interface AuthContextData {
   user: object;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  signUp(credentials: SignUpCredentials): Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
+  const history = useHistory();
+
   const [data, setData] = useState<AuthState>(() => {
     const user = localStorage.getItem('@GoBarber:user');
     const token = localStorage.getItem('@GoBarber:token');
@@ -34,26 +44,40 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', { email, password });
+  const signIn = useCallback(
+    async ({ email, password }) => {
+      const response = await api.post('sessions', { email, password });
 
-    const { user, token } = response.data;
+      const { user, token } = response.data;
 
-    localStorage.setItem('@GoBarber:user', JSON.stringify(user));
-    localStorage.setItem('@GoBarber:token', token);
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+      localStorage.setItem('@GoBarber:token', token);
 
-    setData({ user, token });
-  }, []);
+      setData({ user, token });
+      history.push('/dashboard');
+    },
+    [history],
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@GoBarber:user');
     localStorage.removeItem('@GoBarber:token');
 
     setData({} as AuthState);
-  }, []);
+    history.push('/');
+  }, [history]);
+
+  const signUp = useCallback(
+    async ({ name, email, password }) => {
+      await api.post('users', { name, email, password });
+
+      history.push('/');
+    },
+    [history],
+  );
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,6 +3,10 @@ import { FiArrowLeft, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { Link } from 'react-router-dom';
+import { ValidationError } from 'yup';
+
+import { useAuth } from '../../context/auth';
+import { useToast } from '../../context/toast';
 
 import { signUpSchema } from '../../utils/validations/signSchema';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -14,21 +18,56 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
+  const { signUp } = useAuth();
+  const { addToast } = useToast();
 
-      await signUpSchema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (error) {
-      const validationErrors = getValidationErrors(error);
-      formRef.current?.setErrors(validationErrors);
-    }
-  }, []);
+  const handleSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        await signUpSchema.validate(data, {
+          abortEarly: false,
+        });
+
+        await signUp({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'Sucesso',
+          description: 'Cadastro realizado com sucesso',
+        });
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          const validationErrors = getValidationErrors(error);
+          formRef.current?.setErrors(validationErrors);
+
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro de cadastro',
+          description:
+            'Ocorreu um erro ao fazer o cadastro. Por favor, tente novamente',
+        });
+      }
+    },
+    [signUp, addToast],
+  );
 
   return (
     <Container>

@@ -42,6 +42,12 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password,
         });
+
+        addToast({
+          type: 'success',
+          title: 'Sucesso',
+          description: 'Login realizado com sucesso',
+        });
       } catch (error) {
         if (error instanceof ValidationError) {
           const validationErrors = getValidationErrors(error);
