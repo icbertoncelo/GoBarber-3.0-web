@@ -2,8 +2,14 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  avatar_url: string;
+}
+
 interface AuthState {
-  user: object;
+  user: User;
   token: string;
 }
 
@@ -19,7 +25,7 @@ interface SignUpCredentials {
 }
 
 interface AuthContextData {
-  user: object;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   signUp(credentials: SignUpCredentials): Promise<void>;
