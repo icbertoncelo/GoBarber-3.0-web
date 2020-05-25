@@ -6,4 +6,12 @@ const forgotPasswordSchema = Yup.object().shape({
     .email('Digite um e-mail válido'),
 });
 
-export { forgotPasswordSchema };
+const resetPasswordSchema = Yup.object().shape({
+  password: Yup.string().required('Senha obrigatória'),
+  password_confirmation: Yup.string().oneOf(
+    [Yup.ref('password'), null],
+    'Confirmação de senha incorreta',
+  ),
+});
+
+export { forgotPasswordSchema, resetPasswordSchema };
