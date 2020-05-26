@@ -26,6 +26,7 @@ interface ResetPasswordFormData {
 const ResetPassword: React.FC = () => {
   const history = useHistory();
   const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
 
   const formRef = useRef<FormHandles>(null);
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ const ResetPassword: React.FC = () => {
         });
 
         const { password, password_confirmation } = data;
-        const token = new URLSearchParams(search).get('token');
+        const token = queryParams.get('token');
 
         await api.post('password/reset', {
           password,
@@ -76,7 +77,7 @@ const ResetPassword: React.FC = () => {
         setLoading(false);
       }
     },
-    [search, history, addToast],
+    [queryParams, history, addToast],
   );
 
   return (
