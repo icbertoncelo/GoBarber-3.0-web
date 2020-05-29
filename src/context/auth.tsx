@@ -30,6 +30,7 @@ interface AuthContextData {
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   signUp(credentials: SignUpCredentials): Promise<void>;
+  updateUser(user: User): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -54,7 +55,7 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(
-    async ({ email, password }) => {
+    async ({ email, password }: SignInCredentials) => {
       const response = await api.post('sessions', { email, password });
 
       const { user, token } = response.data;
@@ -79,7 +80,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, [history]);
 
   const signUp = useCallback(
-    async ({ name, email, password }) => {
+    async ({ name, email, password }: SignUpCredentials) => {
       await api.post('users', { name, email, password });
 
       history.push('/');
@@ -87,8 +88,22 @@ const AuthProvider: React.FC = ({ children }) => {
     [history],
   );
 
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [data.token],
+  );
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, signUp }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, signUp, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

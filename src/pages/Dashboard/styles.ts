@@ -27,6 +27,10 @@ export const HeaderContent = styled.div`
       color: #999591;
       height: 20px;
       width: 20px;
+
+      &:hover {
+        color: ${shade(0.2, '#999591')};
+      }
     }
   }
 `;

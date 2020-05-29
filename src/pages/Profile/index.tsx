@@ -1,5 +1,5 @@
-import React, { useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useRef, ChangeEvent } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import { FiMail, FiLock, FiUser, FiCamera, FiArrowLeft } from 'react-icons/fi';
 
@@ -7,10 +7,12 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { ValidationError } from 'yup';
 
+import api from '../../services/api';
+
 import { useAuth } from '../../context/auth';
 import { useToast } from '../../context/toast';
 
-import { signUpSchema } from '../../utils/validations/signSchema';
+import { updateProfileSchema } from '../../utils/validations/updateProfileValidation';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Header, Content, AvatarInput } from './styles';
@@ -21,13 +23,16 @@ import Button from '../../components/Button';
 interface ProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
 
-  const { signUp, user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
@@ -35,20 +40,37 @@ const Profile: React.FC = () => {
       try {
         formRef.current?.setErrors({});
 
-        await signUpSchema.validate(data, {
+        await updateProfileSchema.validate(data, {
           abortEarly: false,
         });
 
-        await signUp({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        });
+        const {
+          name,
+          email,
+          old_password,
+          password,
+          password_confirmation,
+        } = data;
+
+        const requestData = {
+          name,
+          email,
+          ...(old_password && {
+            old_password,
+            password,
+            password_confirmation,
+          }),
+        };
+
+        const response = await api.put('profile', requestData);
+
+        updateUser(response.data);
+        history.push('dashboard');
 
         addToast({
           type: 'success',
-          title: 'Sucesso',
-          description: 'Cadastro realizado com sucesso',
+          title: 'Perfil atualizado',
+          description: 'Seu perfil alterado com sucesso',
         });
       } catch (error) {
         if (error instanceof ValidationError) {
@@ -60,13 +82,43 @@ const Profile: React.FC = () => {
 
         addToast({
           type: 'error',
-          title: 'Erro de cadastro',
+          title: 'Erro de atualização',
           description:
-            'Ocorreu um erro ao fazer o cadastro. Por favor, tente novamente',
+            'Ocorreu um erro ao atualizar o seu perfil. Por favor, tente novamente',
         });
       }
     },
-    [signUp, addToast],
+    [addToast, updateUser, history],
+  );
+
+  const handleChangeAvatar = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        const requestData = new FormData();
+
+        requestData.append('avatar', event.target.files[0]);
+
+        try {
+          const response = await api.patch('users/avatar', requestData);
+
+          updateUser(response.data);
+
+          addToast({
+            type: 'success',
+            title: 'Sucesso',
+            description: 'Avatar atualizado com sucesso',
+          });
+        } catch (error) {
+          addToast({
+            type: 'error',
+            title: 'Erro',
+            description:
+              'Ocorreu um erro ao atualizar o avatar. Por favor, tente novamente',
+          });
+        }
+      }
+    },
+    [addToast, updateUser],
   );
 
   return (
@@ -90,9 +142,10 @@ const Profile: React.FC = () => {
         >
           <AvatarInput>
             <img src={user.avatar_url} alt={user.name} />
-            <button type="button">
+            <label htmlFor="avatar">
               <FiCamera />
-            </button>
+              <input type="file" id="avatar" onChange={handleChangeAvatar} />
+            </label>
           </AvatarInput>
 
           <h1>Meu perfil</h1>
@@ -102,8 +155,8 @@ const Profile: React.FC = () => {
 
           <Input
             containerStyle={{ marginTop: 24 }}
-            type="old_password"
-            name="password"
+            type="password"
+            name="old_password"
             placeholder="Senha atual"
             icon={FiLock}
           />
@@ -114,13 +167,13 @@ const Profile: React.FC = () => {
             icon={FiLock}
           />
           <Input
-            type="password_confirmation"
-            name="password"
+            type="password"
+            name="password_confirmation"
             placeholder="Confirmar nova senha"
             icon={FiLock}
           />
 
-          <Button type="submit">Cadastrar</Button>
+          <Button type="submit">Atualizar perfil</Button>
         </Form>
       </Content>
     </>
