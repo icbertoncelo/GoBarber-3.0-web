@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+import devices from '../../utils/devices';
+
 export const Header = styled.header`
   height: 144px;
   background: #28262e;
@@ -22,6 +24,12 @@ export const Header = styled.header`
       &:hover {
         color: ${shade(0.2, '#999591')};
       }
+    }
+  }
+
+  @media ${devices.mobile} {
+    div {
+      padding: 0 16px;
     }
   }
 `;

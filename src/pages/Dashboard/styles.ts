@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+import devices from '../../utils/devices';
+
 export const Container = styled.div``;
 
 export const Header = styled.header`
   padding: 32px 0;
   background: #28262e;
+
+  @media ${devices.mobile} {
+    padding: 16px;
+  }
 `;
 
 export const HeaderContent = styled.div`
@@ -31,6 +37,12 @@ export const HeaderContent = styled.div`
       &:hover {
         color: ${shade(0.2, '#999591')};
       }
+    }
+  }
+
+  @media ${devices.mobile} {
+    > img {
+      height: 60px;
     }
   }
 `;
@@ -66,12 +78,21 @@ export const Profile = styled.div`
       }
     }
   }
+
+  @media ${devices.mobile} {
+    margin-left: 60px;
+  }
 `;
 
 export const Content = styled.main`
   display: flex;
   max-width: 1120px;
   margin: 64px auto;
+
+  @media ${devices.mobile} {
+    flex-direction: column-reverse;
+    margin: 0;
+  }
 `;
 
 export const Schedule = styled.div`
@@ -100,6 +121,15 @@ export const Schedule = styled.div`
       height: 12px;
       margin: 0 8px;
       background: #ff9000;
+    }
+  }
+
+  @media ${devices.mobile} {
+    margin-right: 0;
+    padding: 16px;
+
+    h1 {
+      font-size: 2.6rem;
     }
   }
 `;
@@ -271,5 +301,18 @@ export const Calendar = styled.aside`
     background: #ff9000 !important;
     border-radius: 10px;
     color: #232129 !important;
+  }
+
+  @media ${devices.mobile} {
+    width: 100%;
+
+    .DayPicker-Day {
+      width: 20px;
+      height: 20px;
+    }
+
+    .DayPicker {
+      font-size: 1.4rem;
+    }
   }
 `;

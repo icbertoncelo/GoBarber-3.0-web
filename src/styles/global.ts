@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import devices from '../utils/devices';
 
 export default createGlobalStyle`
   *{
@@ -21,6 +22,10 @@ export default createGlobalStyle`
   body, input, button {
     font-size: 1.6rem;
     font-family: 'Roboto Slab', serif;
+
+    @media ${devices.mobile} {
+      font-size: 1.4rem;
+    }
   }
 
   h1, h2, h3, h4, h5, h6, strong {

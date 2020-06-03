@@ -11,5 +11,6 @@ export const Container = styled.div`
 
   @media ${devices.mobile} {
     width: 100vw;
+    padding: 16px;
   }
 `;
