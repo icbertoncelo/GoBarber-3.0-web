@@ -5,7 +5,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { ValidationError } from 'yup';
 
-import { useToast } from '../../context/toast';
+import { useToast } from '../../contexts/toast';
 import api from '../../services/api';
 
 import { resetPasswordSchema } from '../../utils/validations/passwordSchema';

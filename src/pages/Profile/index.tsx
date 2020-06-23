@@ -9,8 +9,8 @@ import { ValidationError } from 'yup';
 
 import api from '../../services/api';
 
-import { useAuth } from '../../context/auth';
-import { useToast } from '../../context/toast';
+import { useAuth } from '../../contexts/auth';
+import { useToast } from '../../contexts/toast';
 
 import { updateProfileSchema } from '../../utils/validations/updateProfileValidation';
 import getValidationErrors from '../../utils/getValidationErrors';

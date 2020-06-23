@@ -5,8 +5,8 @@ import { FormHandles } from '@unform/core';
 import { Link } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
-import { useAuth } from '../../context/auth';
-import { useToast } from '../../context/toast';
+import { useAuth } from '../../contexts/auth';
+import { useToast } from '../../contexts/toast';
 
 import { signUpSchema } from '../../utils/validations/signSchema';
 import getValidationErrors from '../../utils/getValidationErrors';

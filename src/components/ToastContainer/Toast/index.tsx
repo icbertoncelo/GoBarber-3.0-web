@@ -6,7 +6,7 @@ import {
   FiCheckCircle,
 } from 'react-icons/fi';
 
-import { ToastMessage, useToast } from '../../../context/toast';
+import { ToastMessage, useToast } from '../../../contexts/toast';
 
 import { Container } from './styles';
 

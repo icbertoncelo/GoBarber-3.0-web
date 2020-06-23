@@ -7,7 +7,7 @@ import { FiPower, FiClock } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
-import { useAuth } from '../../context/auth';
+import { useAuth } from '../../contexts/auth';
 import api from '../../services/api';
 
 import {
